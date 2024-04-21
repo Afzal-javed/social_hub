@@ -9,6 +9,7 @@
 # testing
 /coverage
 
+.env.loacl
 # next.js
 /.next/
 /out/
