@@ -6,7 +6,7 @@ import { friendPosts } from '@/redux/Slice/friendPostSlice'
 import { friendInfo } from '@/redux/Slice/friendSlice'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Image from "next/image";
 import loading from "../../../public/loading.gif";
@@ -57,29 +57,29 @@ const page = ({ isMobile, }) => {
     return (
         <div className="w-full h-full lg:flex xl:flex xl:justify-between lg:justify-between ">
             <div className={`${isMobile ? '' : 'hidden'} w-full lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
-                {
-                    friendData.email !== "" ?
+                <Suspense fallback={<div>Loading friend data...</div>}>
+                    {friendData.email !== "" ?
                         <FriendProfilePage
                             userData={friendData}
                             totalPost={friendPost.postList.length} />
                         :
                         <div className="w-full h-full flex items-center justify-center">
-
                             <Image src={loading} alt="" width={150} height={150} />
                         </div>}
+                </Suspense>
             </div>
             <section className="w-full h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
-                {
-                    friendPost.postList.length !== 0 ?
+                <Suspense fallback={<div>Loading posts...</div>}>
+                    {friendPost.postList.length !== 0 ?
                         <PostSection
                             posts={reverseFriendPost}
                             userData={userData}
                             isSame={isSame} />
                         :
                         <div className="w-full h-full flex items-center justify-center">
-
                             <Image src={loading2} alt="" width={150} height={150} />
                         </div>}
+                </Suspense>
             </section>
             <div className=" hidden h-screen lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
                 <UserListSection
