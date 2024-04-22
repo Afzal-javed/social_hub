@@ -16,12 +16,49 @@ const page = ({ isMobile, }) => {
     const search = useSearchParams();
     const dispatch = useDispatch();
     const id = search.get("query");
+    // useEffect(() => {
+    //     const getfriendData = async () => {
+    //         try {
+    //             const res = await axios.get(`/api/userData/${id}`)
+    //             if (res?.status === 200) {
+    //                 dispatch(friendInfo(res?.data?.user))
+    //             }
+    //         } catch (error) {
+    //             if (error?.response?.status === 404) {
+    //                 toast(error?.response?.data?.msg)
+    //             }
+    //             if (error?.response?.status === 500) {
+    //                 toast(error?.response?.data?.msg)
+    //             }
+    //         }
+    //     }
+    //     async function getfriendPosts() {
+    //         try {
+    //             const res = await axios.get(`/api/addfriends/${id}`)
+    //             if (res?.status === 200) {
+    //                 dispatch(friendPosts(res?.data?.friendPost));
+    //             }
+    //         } catch (error) {
+    //             if (error?.response?.status === 500) {
+    //                 toast(error?.response?.data?.msg)
+    //             }
+    //         }
+    //     }
+    //     getfriendPosts();
+    //     getfriendData()
+    // }, [])
     useEffect(() => {
-        const getfriendData = async () => {
+        const fetchData = async () => {
             try {
-                const res = await axios.get(`/api/userData/${id}`)
-                if (res?.status === 200) {
-                    dispatch(friendInfo(res?.data?.user))
+                const [userDataRes, friendDataRes] = await Promise.all([
+                    axios.get(`/api/userData/${id}`),
+                    axios.get(`/api/addfriends/${id}`)
+                ]);
+                if (userDataRes?.status === 200) {
+                    dispatch(friendInfo(userDataRes?.data?.user));
+                }
+                if (friendDataRes?.status === 200) {
+                    dispatch(friendPosts(friendDataRes?.data?.friendPost));
                 }
             } catch (error) {
                 if (error?.response?.status === 404) {
@@ -31,22 +68,9 @@ const page = ({ isMobile, }) => {
                     toast(error?.response?.data?.msg)
                 }
             }
-        }
-        async function getfriendPosts() {
-            try {
-                const res = await axios.get(`/api/addfriends/${id}`)
-                if (res?.status === 200) {
-                    dispatch(friendPosts(res?.data?.friendPost));
-                }
-            } catch (error) {
-                if (error?.response?.status === 500) {
-                    toast(error?.response?.data?.msg)
-                }
-            }
-        }
-        getfriendPosts();
-        getfriendData()
-    }, [])
+        };
+        fetchData();
+    }, [id, dispatch]);
 
     const friendPost = useSelector((state) => state.friendPost)
     const userData = useSelector((state) => state.user)
