@@ -11,7 +11,7 @@ import Image from "next/image";
 import loading from "../../public/loading.gif";
 import loading2 from "../../public/loading2.gif";
 
-export default function Home({ isMobile }) {
+export default function Home() {
   const userData = useSelector((state) => state.user);
   const post = useSelector((state) => state.posts);
   let id = null;
@@ -58,7 +58,7 @@ export default function Home({ isMobile }) {
   const reversedPosts = [...filterPost].reverse()
   return (
     <div className="w-full h-full lg:flex xl:flex xl:justify-between lg:justify-between ">
-      <div className={`${isMobile ? '' : 'hidden'} w-full lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
+      <div className={` w-[27%] lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
         {
           userData.email !== "" ?
             <ProfileSection
@@ -71,7 +71,7 @@ export default function Home({ isMobile }) {
             </div>
         }
       </div>
-      <section className="w-full h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
+      <section className="w-[47%] h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
         {
           post.postList.length !== 0 ?
             <PostSection
@@ -83,7 +83,7 @@ export default function Home({ isMobile }) {
             </div>
         }
       </section>
-      <div className=" hidden h-screen lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
+      <div className=" h-screen w-[23%] lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
         <UserListSection
           userData={userData} />
       </div>

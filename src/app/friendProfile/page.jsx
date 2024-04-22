@@ -12,7 +12,7 @@ import Image from "next/image";
 import loading from "../../../public/loading.gif";
 import loading2 from "../../../public/loading2.gif";
 
-const page = ({ isMobile, }) => {
+const page = () => {
     const search = useSearchParams();
     const dispatch = useDispatch();
     const id = search.get("query");
@@ -80,19 +80,19 @@ const page = ({ isMobile, }) => {
 
     return (
         <div className="w-full h-full lg:flex xl:flex xl:justify-between lg:justify-between ">
-            <div className={`${isMobile ? '' : 'hidden'} w-full lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
+            <div className={`w-[27%] lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
                 <Suspense fallback={<div>Loading friend data...</div>}>
                     {friendData.email !== "" ?
                         <FriendProfilePage
                             userData={friendData}
                             totalPost={friendPost.postList.length} />
                         :
-                        <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-[27%] h-full flex items-center justify-center">
                             <Image src={loading} alt="" width={150} height={150} />
                         </div>}
                 </Suspense>
             </div>
-            <section className="w-full h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
+            <section className="w-[47%] h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
                 <Suspense fallback={<div>Loading posts...</div>}>
                     {friendPost.postList.length !== 0 ?
                         <PostSection
@@ -100,12 +100,12 @@ const page = ({ isMobile, }) => {
                             userData={userData}
                             isSame={isSame} />
                         :
-                        <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-[47%] h-full flex items-center justify-center">
                             <Image src={loading2} alt="" width={150} height={150} />
                         </div>}
                 </Suspense>
             </section>
-            <div className=" hidden h-screen lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
+            <div className=" h-screen w-[23%] lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
                 <UserListSection
                     userData={friendData} />
             </div>
