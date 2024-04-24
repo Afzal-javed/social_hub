@@ -47,9 +47,10 @@ const PostSection = ({ isSame, posts, userData }) => {
             <NavBar />
             <div className="w-full h-screen relative flex flex-col items-center border-b border-black overflow-y-scroll">
                 {
-                    posts.map((post, index) => (
-
-                        <PostCard deletePost={deletePost} isSame={isSame} idx={index} userId={userData.id} postedUserId={post.userId} onClick={likedPost} postId={post._id} isLiked={post.like.includes(userData.id) ? true : false} firstName={post.firstName} lastName={post.lastName} profile={post.profile} createdAt={post.createdAt} description={post.description} postImage={post.post} like={post.like} comment={post.comment} />
+                    posts.map((post) => (
+                        <div key={post._id} className="w-full">
+                            <PostCard deletePost={deletePost} isSame={isSame} idx={post._id} userId={userData.id} postedUserId={post.userId} onClick={likedPost} postId={post._id} isLiked={post.like.includes(userData.id) ? true : false} firstName={post.firstName} lastName={post.lastName} profile={post.profile} createdAt={post.createdAt} description={post.description} postImage={post.post} like={post.like} comment={post.comment} />
+                        </div>
                     ))
                 }
                 <Link href={"/uploadPost"} className="sticky bottom-[8rem] lg:bottom-5 xl:bottom-5 ml-auto mr-5 lg:mr-8 xl:mr-8  bg-yellow-400 shadow-lg w-[5rem] h-[5rem] flex items-center justify-center rounded-full  cursor-pointer ">

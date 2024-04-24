@@ -35,18 +35,19 @@ const AllUserList = ({ allUsers, userId }) => {
         <div className="w-full h-[50%] flex flex-col shadow-lg items-center overflow-y-scroll scroll-smooth">
             <h1 className=" w-full text-xl font-semibold border-b border-slate-500 p-3">All User List</h1>
             {
-                allUsers.map((user, index) => (
-                    <AllUserCard
-                        profile={user.profile}
-                        firstName={user.firstName}
-                        lastName={user.lastName}
-                        email={user.email}
-                        id={user._id}
-                        idx={index}
-                        onClick={addFriends}
-                        searchId={searchId}
-                    />
-
+                allUsers.map((user) => (
+                    <div className='w-full' key={user._id}>
+                        <AllUserCard
+                            profile={user.profile}
+                            firstName={user.firstName}
+                            lastName={user.lastName}
+                            email={user.email}
+                            id={user._id}
+                            idx={user._id}
+                            onClick={addFriends}
+                            searchId={searchId}
+                        />
+                    </div>
                 ))
             }
         </div>

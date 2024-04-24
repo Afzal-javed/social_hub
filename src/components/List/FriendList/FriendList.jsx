@@ -35,17 +35,19 @@ const FriendList = ({ friendList }) => {
         <div className="w-full h-[50%] flex flex-col shadow-lg items-center overflow-y-scroll scroll-smooth">
             <h1 className=" w-full text-xl font-semibold border-b border-slate-500 p-3">Friend List</h1>
             {
-                friendList.map((friend, index) => (
-                    <UserListCard
-                        profile={friend.profile}
-                        firstName={friend.firstName}
-                        email={friend.email}
-                        lastName={friend.lastName}
-                        id={friend.id}
-                        idx={index}
-                        onClick={removeFriend}
-                        searchId={searchId}
-                    />
+                friendList.map((friend) => (
+                    <div key={friend.id} className='w-full'>
+                        <UserListCard
+                            profile={friend.profile}
+                            firstName={friend.firstName}
+                            email={friend.email}
+                            lastName={friend.lastName}
+                            id={friend.id}
+                            idx={friend.id}
+                            onClick={removeFriend}
+                            searchId={searchId}
+                        />
+                    </div>
                 ))
             }
         </div>

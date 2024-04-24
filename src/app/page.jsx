@@ -67,7 +67,7 @@ export default function Home() {
             :
             <div className="w-full h-full flex items-center justify-center">
 
-              <Image src={loading} alt="" width={150} height={150} />
+              <Image src={loading} alt="loading" width={150} height={150} />
             </div>
         }
       </div>
@@ -79,7 +79,7 @@ export default function Home() {
               userData={userData} />
             :
             <div className="w-full h-full flex items-center justify-center">
-              <Image src={loading2} alt="" width={150} height={150} />
+              <Image src={loading2} alt="loading" width={150} height={150} />
             </div>
         }
       </section>
