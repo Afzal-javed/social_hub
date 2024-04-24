@@ -32,9 +32,9 @@ export const GET = async (req, { params }) => {
 export const DELETE = async (req, { params }) => {
     await connection();
     try {
-        const postId = params.postId;
+        const postId = params.id;
         await Post.findByIdAndDelete({ _id: postId });
-
+        return NextResponse.json({ msg: "Post Deleted Successfully" }, { status: 200 })
     } catch (error) {
         console.log(error);
         return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });

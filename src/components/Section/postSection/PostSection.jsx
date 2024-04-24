@@ -1,17 +1,16 @@
 "use client"
-import Image from "next/image";
 import NavBar from "@/components/NavBar/NavBar";
-import { useState } from "react";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import PostCard from "@/components/Card/postCard/PostCard";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { allPosts } from "@/redux/Slice/postsSlice";
+import { useRouter } from "next/navigation";
 
 const PostSection = ({ isSame, posts, userData }) => {
     const dispatch = useDispatch();
-
+    const router = useRouter();
     const likedPost = async (postId) => {
         try {
             const userId = userData.id
@@ -27,11 +26,11 @@ const PostSection = ({ isSame, posts, userData }) => {
         }
     }
     const deletePost = async (postId) => {
-        console.log(postId)
         try {
             const res = await axios.delete(`/api/posts/${postId}`);
             if (res.status === 200) {
-                console.log(res.data);
+                toast(res?.data?.msg)
+                router.push("/");
             }
         } catch (error) {
             if (error?.response?.status === 500) {
