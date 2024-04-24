@@ -32,7 +32,7 @@ export const POST = async (req, res) => {
         return NextResponse.json({ msg: "Post Uploaded Successfully" }, { status: 200 })
     } catch (error) {
         console.log(error)
-        return NextResponse.json({ msg: "Interbal Server Error" }, { status: 500 })
+        return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 })
     }
 }
 
