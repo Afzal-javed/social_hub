@@ -15,18 +15,18 @@ export const POST = async (req, res) => {
         const userId = body.get("userId");
         const description = body.get("description");
         const post = body.get("post");
-        const byteLength = await post.arrayBuffer();
-        const BufferData = Buffer.from(byteLength);
-        const imageName = `${new Date().getTime()}${path.extname(post.name)}`
-        const postPath = `./public/uploads/posts/${imageName}`
-        await writeFile(postPath, BufferData);
+        // const byteLength = await post.arrayBuffer();
+        // const BufferData = Buffer.from(byteLength);
+        // const imageName = `${new Date().getTime()}${path.extname(post.name)}`
+        // const postPath = `./public/uploads/posts/${imageName}`
+        // await writeFile(postPath, BufferData);
         const newPost = new Post({
             userId,
             firstName,
             lastName,
             profile,
             description,
-            post: imageName
+            post,
         })
         await newPost.save();
         return NextResponse.json({ msg: "Post Uploaded Successfully" }, { status: 200 })

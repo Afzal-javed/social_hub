@@ -6,20 +6,39 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
+import cloudinary from 'cloudinary-core';
 
 const page = () => {
     const router = useRouter();
     const userData = useSelector((state) => state.user)
     const [description, setDescription] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
+    const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState('');
+
+    const cl = new cloudinary.Cloudinary({
+        cloud_name: `${process.env.NEXT_PUBLIC_CLOUD_NAME}`,
+        api_key: `${process.env.NEXT_PUBLIC_API_KEY}`,
+        api_secret: `${process.env.NEXT_PUBLIC_API_SECRET}`
+
+    })
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
+            try {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`);
+                const response = await axios.post(`https://api.cloudinary.com/v1_1/${cl.config().cloud_name}/image/upload`, formData);
+                setCloudinaryImageUrl(response.data.secure_url);
+                setSelectedImage(file);
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary:", error);
+            }
             setSelectedImage(file);
         }
     }
+
     const cancelInput = () => {
         setSelectedImage(null)
         setDescription('')
@@ -27,14 +46,14 @@ const page = () => {
 
     const postUpload = async () => {
         try {
-            if (selectedImage) {
+            if (cloudinaryImageUrl) {
                 const formData = new FormData();
                 formData.append("firstName", userData.firstName);
                 formData.append("lastName", userData.lastName);
                 formData.append("profile", userData.profile);
                 formData.append("userId", userData.id);
                 formData.append("description", description);
-                formData.append("post", selectedImage)
+                formData.append("post", cloudinaryImageUrl)
                 const res = await axios.post("/api/posts", formData);
                 if (res.status === 200) {
                     toast(res?.data?.msg)

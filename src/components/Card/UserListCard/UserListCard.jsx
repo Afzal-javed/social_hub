@@ -9,7 +9,7 @@ const UserListCard = ({ searchId, firstName, lastName, onClick, id, idx, email, 
     return (
         <div key={idx} className="w-full flex items-center gap-4 p-3 border-b border-slate-300">
             <div onClick={() => router.push(`/friendProfile?query=${id}`)} className="w-12 h-12 border border-black overflow-hidden relative  rounded-full shadow-lg flex flex-col items-center ">
-                <Image src={`/uploads/${profile}`}
+                <Image src={`${profile}`}
                     alt="profile" className="object-cover cursor-pointer"
                     width={100}
                     height={100}

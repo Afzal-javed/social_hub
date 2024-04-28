@@ -16,6 +16,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import cloudinary from 'cloudinary-core';
 
 
 const page = () => {
@@ -23,6 +24,8 @@ const page = () => {
     const router = useRouter();
     const userData = useSelector((state) => state.user)
     const [selectedImage, setSelectedImage] = useState(null);
+    const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState('');
+
     const [user, setUser] = useState({
         firstName: userData.firstName || "",
         lastName: userData.lastName || "",
@@ -38,9 +41,25 @@ const page = () => {
         portfolioLinks: userData.portfolioLinks || "",
         twitterLinks: userData.twitterLinks || ""
     })
+    const cl = new cloudinary.Cloudinary({
+        cloud_name: `${process.env.NEXT_PUBLIC_CLOUD_NAME}`,
+        api_key: `${process.env.NEXT_PUBLIC_API_KEY}`,
+        api_secret: `${process.env.NEXT_PUBLIC_API_SECRET}`
+
+    })
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
+            try {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`);
+                const response = await axios.post(`https://api.cloudinary.com/v1_1/${cl.config().cloud_name}/image/upload`, formData);
+                setCloudinaryImageUrl(response.data.secure_url);
+                setSelectedImage(file);
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary:", error);
+            }
             setSelectedImage(file);
         } else {
             setSelectedImage(logo);
@@ -55,7 +74,7 @@ const page = () => {
             }
         })
     }
-    const userRegister = async (e) => {
+    const userUpdateProfile = async (e) => {
         e.preventDefault();
         try {
             const formData = new FormData();
@@ -72,9 +91,7 @@ const page = () => {
             formData.append("faceBookLinks", user.faceBookLinks)
             formData.append("instaLinks", user.instaLinks)
             formData.append("portfolioLinks", user.portfolioLinks)
-            if (selectedImage) {
-                formData.append("profile", selectedImage)
-            }
+            formData.append("profile", cloudinaryImageUrl)
             const res = await axios.patch(`/api/register/${userData.id}`, formData)
             // const res = await axios.patch(`/api/register/${id}`, formData)
             if (res?.status === 200) {
@@ -106,7 +123,7 @@ const page = () => {
                         />
                             :
                             <>
-                                <Image src={`/uploads/${userData.profile}`} width={150} height={150} alt="profile" className="object-fit" />
+                                <Image src={`${userData.profile}`} width={150} height={150} alt="profile" className="object-fit" />
                                 <label htmlFor="profile">
                                     <p className="absolute bottom-0 left-0.5 text-lg text-center bg-slate-700 text-white w-full">Upload</p>
                                     <input type="file" id="profile" className="hidden" onInput={handleImageChange} />
@@ -235,7 +252,7 @@ const page = () => {
                             onChange={userInputData}
                         />
                     </div>
-                    <Button type={"button"} onClick={userRegister} btnName={"Update"} btnStyle={"w-[10rem] text-lg p-2 my-2"} />
+                    <Button type={"button"} onClick={userUpdateProfile} btnName={"Update"} btnStyle={"w-[10rem] text-lg p-2 my-2"} />
                 </form>
             </div>
         </section>

@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import loading from "../../public/loading.gif";
-import loading2 from "../../public/loading2.gif";
 
 export default function Home() {
   const userData = useSelector((state) => state.user);
@@ -72,16 +71,11 @@ export default function Home() {
         }
       </div>
       <section className="w-[47%] h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
-        {
-          post.postList.length !== 0 ?
-            <PostSection
-              posts={reversedPosts}
-              userData={userData} />
-            :
-            <div className="w-full h-full flex items-center justify-center">
-              <Image src={loading2} alt="loading" width={150} height={150} />
-            </div>
-        }
+
+        <PostSection
+          posts={reversedPosts}
+          userData={userData} />
+
       </section>
       <div className=" h-screen w-[23%] lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
         <UserListSection

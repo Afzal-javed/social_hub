@@ -6,7 +6,6 @@ import { IoIosSend } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
 import Input from "@/components/UsableComponents/Input/Input";
 import { useState } from "react";
-import profilePic from "../../../../public/uploads/img.jpg";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -29,6 +28,7 @@ const PostCard = ({ isSame, deletePost, isLiked, userId, postId, postedUserId, o
         setPostComment(!postComment);
         setAllComments(false);
     }
+    console.log(profile);
     const addComments = async (postId) => {
         try {
             const res = await axios.patch("/api/posts/comments", { postId, userId, userComment: doComment });
@@ -69,7 +69,7 @@ const PostCard = ({ isSame, deletePost, isLiked, userId, postId, postedUserId, o
             <div className="w-full flex border-b  items-center gap-2 px-4 py-2 my-2">
                 <div onClick={() => router.push(`/friendProfile?query=${postedUserId}`)} className="w-[4rem] h-[4rem] border border-black overflow-hidden relative  rounded-full shadow-lg flex flex-col items-center ">
                     {/* <Image src={profilePic} router.push(`/login?query=${user.email}`) */}
-                    <Image src={`/uploads/${profile}`}
+                    <Image src={`${profile}`}
                         alt="profile" className="object-cover cursor-pointer"
                         width={100}
                         height={100}
@@ -86,7 +86,7 @@ const PostCard = ({ isSame, deletePost, isLiked, userId, postId, postedUserId, o
                     <p className="text-justify mb-2">{description}</p>
                 </div>
                 {/* <Image className="w-[100%] max-h-[40rem] object-cover" src={profilePic} width={100} height={100} alt="posts" /> */}
-                <Image className="w-[100%] max-h-[40rem] object-cover" src={`/uploads/posts/${postImage}`} width={100} height={100} alt="posts" />
+                <Image className="w-[100%] max-h-[40rem] object-contain" src={postImage} width={100} height={100} alt="posts" />
                 <div className="w-full flex flex-col items-center  ">
                     <div className="w-full flex items-center justify-between p-4">
                         <span onClick={() => onClick(postId)} className="flex items-center justify-center text-lg lg:text-xl xl:text-xl cursor-pointer">{like.length > 0 ? like.length : ""}

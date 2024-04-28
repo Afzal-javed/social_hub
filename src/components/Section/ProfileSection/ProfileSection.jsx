@@ -91,7 +91,7 @@ const ProfileSection = ({ userData, post }) => {
         <div className="w-full shadow-lg px-1">
             <div className="w-full flex items-center gap-4 p-1 cursor-default border-b-2 border-black">
                 <div className="w-20 h-20 border border-black overflow-hidden relative  rounded-full shadow-lg flex flex-col items-center ">
-                    <Image src={`/uploads/${userData.profile}`}
+                    <Image src={`${userData.profile}`}
                         alt="profile" className="object-cover"
                         width={100}
                         height={100}

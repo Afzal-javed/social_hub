@@ -7,6 +7,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { allPosts } from "@/redux/Slice/postsSlice";
 import { useRouter } from "next/navigation";
+import loading2 from "../../../../public/loading2.gif";
+import Image from "next/image";
 
 const PostSection = ({ isSame, posts, userData }) => {
     const dispatch = useDispatch();
@@ -46,11 +48,16 @@ const PostSection = ({ isSame, posts, userData }) => {
             <NavBar />
             <div className="w-full h-screen relative flex flex-col items-center border-b border-black overflow-y-scroll">
                 {
-                    posts.map((post) => (
-                        <div key={post._id} className="w-full">
-                            <PostCard deletePost={deletePost} isSame={isSame} idx={post._id} userId={userData.id} postedUserId={post.userId} onClick={likedPost} postId={post._id} isLiked={post.like.includes(userData.id) ? true : false} firstName={post.firstName} lastName={post.lastName} profile={post.profile} createdAt={post.createdAt} description={post.description} postImage={post.post} like={post.like} comment={post.comment} />
+                    posts.length !== 0 ?
+                        posts.map((post) => (
+                            <div key={post._id} className="w-full">
+                                <PostCard deletePost={deletePost} isSame={isSame} idx={post._id} userId={userData.id} postedUserId={post.userId} onClick={likedPost} postId={post._id} isLiked={post.like.includes(userData.id) ? true : false} firstName={post.firstName} lastName={post.lastName} profile={post.profile} createdAt={post.createdAt} description={post.description} postImage={post.post} like={post.like} comment={post.comment} />
+                            </div>
+                        ))
+                        :
+                        <div className="w-full h-full flex items-center justify-center">
+                            <Image src={loading2} alt="loading" width={150} height={150} />
                         </div>
-                    ))
                 }
                 <Link href={"/uploadPost"} className="sticky bottom-[8rem] lg:bottom-5 xl:bottom-5 ml-auto mr-5 lg:mr-8 xl:mr-8  bg-yellow-400 shadow-lg w-[5rem] h-[5rem] flex items-center justify-center rounded-full  cursor-pointer ">
                     <h1 className="text-5xl leading-[5rem] text-black">+</h1>

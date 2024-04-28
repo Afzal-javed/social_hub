@@ -29,15 +29,15 @@ export const PATCH = async (req, { params }) => {
             return NextResponse.json({ msg: "User not found" }, { status: 404 });
         } else {
             if (profile) {
-                const byteLength = await profile.arrayBuffer();
-                const BufferData = Buffer.from(byteLength)
-                const imageName = `${new Date().getTime()}${path.extname(profile.name)}`
-                const profilePath = `./public/uploads/${imageName}`
-                await writeFile(profilePath, BufferData);
+                // const byteLength = await profile.arrayBuffer();
+                // const BufferData = Buffer.from(byteLength)
+                // const imageName = `${new Date().getTime()}${path.extname(profile.name)}`
+                // const profilePath = `./public/uploads/${imageName}`
+                // await writeFile(profilePath, BufferData);
 
                 const updateUser = {
                     $set: {
-                        profile: imageName, firstName: firstName, lastName: lastName, location: location, occupation: occupation, bio: bio, phoneNumber: phoneNumber, wtpNumber: wtpNumber,
+                        profile: profile, firstName: firstName, lastName: lastName, location: location, occupation: occupation, bio: bio, phoneNumber: phoneNumber, wtpNumber: wtpNumber,
                         githubLinks: githubLinks, linkedinLinks: linkedinLinks, twitterLinks: twitterLinks, instaLinks: instaLinks, faceBookLinks: faceBookLinks, portfolioLinks: portfolioLinks
                     }
                 }

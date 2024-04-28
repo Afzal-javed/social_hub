@@ -1,9 +1,8 @@
 "use client"
 import Image from "next/image";
-import profile from "../../../public/uploads/1710582956841.jpg";
 import { MdMenu } from "react-icons/md";
 import { useState, useEffect } from "react";
-
+import profile from "../../../public/logo.png";
 import Link from "next/link";
 
 

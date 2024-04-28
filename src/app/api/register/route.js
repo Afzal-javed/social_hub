@@ -2,9 +2,9 @@
 import bcrypt from "bcrypt";
 import User from "@/model/userSchema";
 import connection from "@/utils/DB/connection";
-import { writeFile } from "fs/promises";
+// import { writeFile } from "fs/promises";
+// import path from "path";
 import { NextResponse } from "next/server";
-import path from "path";
 
 export const POST = async (req, res) => {
     try {
@@ -18,17 +18,14 @@ export const POST = async (req, res) => {
         const location = await body.get("location")
         const occupation = await body.get("occupation")
         const password = await body.get("password")
-        // console.log(image)
-        const byteLength = await profile.arrayBuffer();
-        // console.log(byteLength)
-        const BufferData = Buffer.from(byteLength)
-        // console.log(BufferData)
-        const imageName = `${new Date().getTime()}${path.extname(profile.name)}`
-        const profilePath = `./public/uploads/${imageName}`
-        // console.log(profilePath);
-        await writeFile(profilePath, BufferData);
-        // const { firstName, lastName, email, location, occupation, password, profile } = body;
 
+        // const byteLength = await profile.arrayBuffer();
+
+        // const BufferData = Buffer.from(byteLength)
+
+        // const imageName = `${new Date().getTime()}${path.extname(profile.name)}`
+        // const profilePath = `./public/uploads/${imageName}`
+        // await writeFile(profilePath, BufferData);
         const isAlreadyExist = await User.findOne({ email })
         if (isAlreadyExist) {
             return NextResponse.json({ msg: "User Already Exists" }, { status: 400 });
@@ -42,7 +39,7 @@ export const POST = async (req, res) => {
                 location,
                 occupation,
                 password: hashPassword,
-                profile: imageName
+                profile,
             })
             newUser.save();
             return NextResponse.json({ msg: "User register successfully" }, { status: 200 });

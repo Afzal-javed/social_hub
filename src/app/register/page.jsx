@@ -9,6 +9,8 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Heading from "@/components/UsableComponents/Heading/Heading";
+import cloudinary from 'cloudinary-core';
+
 
 const page = () => {
     const formRef = useRef();
@@ -19,6 +21,14 @@ const page = () => {
     const [verifyOTP, setVerifyOTP] = useState('');
     const [otpVerified, setOtpVerified] = useState(false);
     const [otpId, setOtpId] = useState("");
+    const [cloudinaryImageUrl, setCloudinaryImageUrl] = useState('');
+
+    const cl = new cloudinary.Cloudinary({
+        cloud_name: `${process.env.NEXT_PUBLIC_CLOUD_NAME}`,
+        api_key: `${process.env.NEXT_PUBLIC_API_KEY}`,
+        api_secret: `${process.env.NEXT_PUBLIC_API_SECRET}`
+
+    })
     const [user, setUser] = useState({
         firstName: "",
         lastName: "",
@@ -31,6 +41,16 @@ const page = () => {
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
+            try {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", `${process.env.NEXT_PUBLIC_UPLOAD_PRESET}`);
+                const response = await axios.post(`https://api.cloudinary.com/v1_1/${cl.config().cloud_name}/image/upload`, formData);
+                setCloudinaryImageUrl(response.data.secure_url);
+                setSelectedImage(file);
+            } catch (error) {
+                console.error("Error uploading image to Cloudinary:", error);
+            }
             setSelectedImage(file);
         } else {
             setSelectedImage(logo);
@@ -60,28 +80,32 @@ const page = () => {
                 if (user.password !== user.cnfPassword) {
                     return toast("Password is not matching");
                 } else {
-                    const formData = new FormData();
-                    formData.append("firstName", user.firstName)
-                    formData.append("lastName", user.lastName)
-                    formData.append("email", user.email)
-                    formData.append("location", user.location)
-                    formData.append("occupation", user.occupation)
-                    formData.append("password", user.password)
-                    formData.append("profile", selectedImage)
-                    const res = await axios.post("/api/register", formData
-                        // {
-                        //     firstName: user.firstName,
-                        //     lastName: user.lastName,
-                        //     email: user.email,
-                        //     location: user.location,
-                        //     occupation: user.occupation,
-                        //     password: user.password,
-                        //     profile: base64String
-                        // }
-                    )
-                    if (res?.status === 200) {
-                        toast(res?.data?.msg)
-                        router.push(`/login?query=${user.email}`)
+                    if (cloudinaryImageUrl) {
+                        const formData = new FormData();
+                        formData.append("firstName", user.firstName)
+                        formData.append("lastName", user.lastName)
+                        formData.append("email", user.email)
+                        formData.append("location", user.location)
+                        formData.append("occupation", user.occupation)
+                        formData.append("password", user.password)
+                        formData.append("profile", cloudinaryImageUrl)
+                        const res = await axios.post("/api/register", formData
+                            // {
+                            //     firstName: user.firstName,
+                            //     lastName: user.lastName,
+                            //     email: user.email,
+                            //     location: user.location,
+                            //     occupation: user.occupation,
+                            //     password: user.password,
+                            //     profile: base64String
+                            // }
+                        )
+                        if (res?.status === 200) {
+                            toast(res?.data?.msg)
+                            router.push(`/login?query=${user.email}`)
+                        }
+                    } else {
+                        toast("Please add a profile")
                     }
                 }
             } else {
