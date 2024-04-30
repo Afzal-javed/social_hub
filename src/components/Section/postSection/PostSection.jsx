@@ -45,7 +45,6 @@ const PostSection = ({ isSame, posts, userData }) => {
     return (
 
         <div className="w-full shadow-xl relative">
-            <NavBar />
             <div className="w-full h-screen relative flex flex-col items-center border-b border-black overflow-y-scroll">
                 {
                     posts.length !== 0 ?

@@ -56,8 +56,8 @@ export default function Home() {
   const filterPost = post.postList.filter(post => post.userId === userData.id || userData.friendList.some(frndPost => frndPost.id === post.userId));
   const reversedPosts = [...filterPost].reverse()
   return (
-    <div className="w-full h-full lg:flex xl:flex xl:justify-between lg:justify-between ">
-      <div className={` w-[27%] lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
+    <div className="w-full h-full grid grid-cols-1  snap-y lg:flex xl:flex xl:justify-between lg:justify-between overflow-y-scroll">
+      <div className={` w-full snap-center lg:w-[27%] xl:w-[27%] h-screen lg:flex lg:flex-col p-2 gap-6 overflow-y-scroll`}>
         {
           userData.email !== "" ?
             <ProfileSection
@@ -70,14 +70,14 @@ export default function Home() {
             </div>
         }
       </div>
-      <section className="w-[47%] h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
+      <section className="w-full snap-center h-screen lg:w-[47%] xl:w-[47%] shadow-xl ">
 
         <PostSection
           posts={reversedPosts}
           userData={userData} />
 
       </section>
-      <div className=" h-screen w-[23%] lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
+      <div className=" h-screen w-full snap-center lg:flex lg:flex-col xl:flex-col xl:flex lg:w-[23%] xl:w-[23%]">
         <UserListSection
           userData={userData} />
       </div>
